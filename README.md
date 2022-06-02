@@ -6,11 +6,11 @@ A tool to generate your reverse shell payloads immediatly instead of searching t
 Clone the repo to your local system and make the rev_shell_gen bash script executable.\
 Run the script with 2 arguements.
 1st argument --> `IP`\
-2nd argument --> `PORT`\
+2nd argument --> `PORT`
 
 Eg: ./rev_shell_gen 192.168.1.45 4444\
 
-Choose a lanaguage option which is needed(Eg:python,bash etc).\
+Choose a lanaguage option which is needed(Eg:python,bash etc).
 Languages offered:\
 ```
 Python
