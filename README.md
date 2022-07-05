@@ -5,6 +5,7 @@ A tool to generate your reverse shell payloads immediatly instead of searching t
 
 Clone the repo to your local system and make the rev_shell_gen bash script executable. 
 Run the script with 2 arguments. 
+
 1st argument --> `IP`
 2nd argument --> `PORT`
 
@@ -18,9 +19,11 @@ Bash
 PHP
 ```
 More languages would be implemented later on. 
+
 You would get 2 or 3 payloads for that specific language as your output. 
 
 ## References
 
 [Hacktricks Shells](https://book.hacktricks.xyz/generic-methodologies-and-resources/shells/linux) 
+
 [PayloadAllTheThings reverse shell cheatsheet](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#python) 
