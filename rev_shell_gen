@@ -80,7 +80,7 @@ add_shell(){
 
 if [[ $# -ne 2 ]]; then
 	echo "Wrong usage of the command"
-	echo "Usage : ./generate.sh IP PORT"
+	echo "Usage : ./rev_shell_gen IP PORT"
 
 else
 	ip=${1,,}		# Changing from uppercase to lowercase
